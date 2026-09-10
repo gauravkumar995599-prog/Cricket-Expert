@@ -1,0 +1,636 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CricketStats - Live Cricket Scores</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #f3f5f7;
+    color: #20252b;
+}
+
+/* HEADER */
+header {
+    background: #0b1725;
+    color: white;
+    padding: 15px 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: #ff7a00;
+}
+
+nav {
+    display: flex;
+    gap: 25px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+nav a:hover {
+    color: #ff7a00;
+}
+
+.search-box input {
+    padding: 9px 14px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+}
+
+/* HERO */
+.hero {
+    background: linear-gradient(120deg, #10283d, #183f5d);
+    color: white;
+    padding: 45px 6%;
+}
+
+.hero h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #d8e1e8;
+    font-size: 17px;
+}
+
+/* CONTAINER */
+.container {
+    width: 88%;
+    max-width: 1250px;
+    margin: 30px auto;
+}
+
+/* SECTION */
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-title h2 {
+    font-size: 23px;
+}
+
+.section-title a {
+    color: #e96f00;
+    text-decoration: none;
+}
+
+/* MATCH GRID */
+.match-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.match-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    transition: .2s;
+}
+
+.match-card:hover {
+    transform: translateY(-3px);
+}
+
+.live {
+    color: #e53935;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.team {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.team-name {
+    font-weight: bold;
+}
+
+.score {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.overs {
+    color: #777;
+    font-size: 12px;
+}
+
+.result {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+    color: #555;
+    font-size: 13px;
+}
+
+/* CONTENT GRID */
+.content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+    margin-top: 35px;
+}
+
+/* NEWS */
+.news-card {
+    background: white;
+    padding: 18px;
+    margin-bottom: 12px;
+    border-radius: 9px;
+}
+
+.news-card h3 {
+    margin-bottom: 7px;
+}
+
+.news-card p {
+    color: #666;
+    line-height: 1.5;
+}
+
+/* STATS */
+.stats-box {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.stat:last-child {
+    border-bottom: none;
+}
+
+.player {
+    font-weight: bold;
+}
+
+.number {
+    color: #e96f00;
+    font-weight: bold;
+}
+
+/* TEAMS */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.team-box {
+    background: white;
+    padding: 22px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+
+.team-icon {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.team-box h3 {
+    font-size: 16px;
+}
+
+/* FOOTER */
+footer {
+    margin-top: 50px;
+    background: #0b1725;
+    color: #aaa;
+    text-align: center;
+    padding: 30px;
+}
+
+footer strong {
+    color: white;
+}
+
+/* MOBILE */
+@media(max-width: 900px) {
+
+    nav {
+        display: none;
+    }
+
+    .match-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+}
+
+@media(max-width: 500px) {
+
+    .search-box {
+        display: none;
+    }
+
+    .container {
+        width: 92%;
+    }
+
+    .team-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+    <div class="logo">
+        Cricket<span>Stats</span>
+    </div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#live">Live Scores</a>
+        <a href="#matches">Matches</a>
+        <a href="#stats">Stats</a>
+        <a href="#teams">Teams</a>
+    </nav>
+
+    <div class="search-box">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search cricket..."
+            onkeyup="searchContent()"
+        >
+    </div>
+
+</header>
+
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+    <h1>Cricket Live Scores & Statistics</h1>
+
+    <p>
+        Follow live cricket scores, matches, players,
+        teams and detailed statistics.
+    </p>
+
+</section>
+
+
+<!-- MAIN -->
+
+<div class="container">
+
+
+<!-- LIVE MATCHES -->
+
+<div class="section-title" id="live">
+
+    <h2>🔴 Live Matches</h2>
+
+    <a href="#">View All</a>
+
+</div>
+
+
+<div class="match-grid" id="matchContainer">
+
+
+<!-- MATCH 1 -->
+
+<div class="match-card searchable">
+
+    <div class="live">● LIVE • ODI</div>
+
+    <div class="team">
+        <span class="team-name">🇮🇳 India</span>
+        <span>
+            <span class="score">287/5</span>
+            <span class="overs">(46.2)</span>
+        </span>
+    </div>
+
+    <div class="team">
+        <span class="team-name">🇦🇺 Australia</span>
+        <span class="score">Yet to bat</span>
+    </div>
+
+    <div class="result">
+        India batting • Target 321
+    </div>
+
+</div>
+
+
+<!-- MATCH 2 -->
+
+<div class="match-card searchable">
+
+    <div class="live">● LIVE • T20</div>
+
+    <div class="team">
+        <span class="team-name">🇬🇧 England</span>
+        <span class="score">164/6</span>
+    </div>
+
+    <div class="team">
+        <span class="team-name">🇿🇦 South Africa</span>
+        <span class="score">162/8</span>
+    </div>
+
+    <div class="result">
+        England need 3 runs from 4 balls
+    </div>
+
+</div>
+
+
+<!-- MATCH 3 -->
+
+<div class="match-card searchable">
+
+    <div class="live">● LIVE • Test</div>
+
+    <div class="team">
+        <span class="team-name">🇮🇳 India</span>
+        <span class="score">412/7</span>
+    </div>
+
+    <div class="team">
+        <span class="team-name">🇳🇿 New Zealand</span>
+        <span class="score">231</span>
+    </div>
+
+    <div class="result">
+        Day 3 • Session 2
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- CONTENT -->
+
+<div class="content-grid">
+
+
+<!-- NEWS -->
+
+<div>
+
+    <div class="section-title">
+        <h2>Latest Cricket News</h2>
+    </div>
+
+    <div class="news-card searchable">
+
+        <h3>India announce squad for upcoming series</h3>
+
+        <p>
+            The Indian cricket team has announced its squad
+            for the upcoming international series.
+        </p>
+
+    </div>
+
+
+    <div class="news-card searchable">
+
+        <h3>Young players impress in domestic cricket</h3>
+
+        <p>
+            Several young cricketers have produced impressive
+            performances in recent matches.
+        </p>
+
+    </div>
+
+
+    <div class="news-card searchable">
+
+        <h3>World cricket prepares for another exciting season</h3>
+
+        <p>
+            International cricket is entering another busy
+            period with several major tournaments ahead.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- TOP STATS -->
+
+<div id="stats">
+
+    <div class="section-title">
+        <h2>Top Stats</h2>
+    </div>
+
+    <div class="stats-box">
+
+        <div class="stat">
+            <span class="player">Virat Kohli</span>
+            <span class="number">12,500 Runs</span>
+        </div>
+
+        <div class="stat">
+            <span class="player">Rohit Sharma</span>
+            <span class="number">11,000 Runs</span>
+        </div>
+
+        <div class="stat">
+            <span class="player">Jasprit Bumrah</span>
+            <span class="number">450 Wkts</span>
+        </div>
+
+        <div class="stat">
+            <span class="player">Rashid Khan</span>
+            <span class="number">600 Wkts</span>
+        </div>
+
+        <div class="stat">
+            <span class="player">Joe Root</span>
+            <span class="number">13,000 Runs</span>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- TEAMS -->
+
+<div id="teams" style="margin-top:40px">
+
+    <div class="section-title">
+
+        <h2>Popular Teams</h2>
+
+        <a href="#">All Teams</a>
+
+    </div>
+
+
+    <div class="team-grid">
+
+        <div class="team-box searchable">
+            <div class="team-icon">🇮🇳</div>
+            <h3>India</h3>
+        </div>
+
+        <div class="team-box searchable">
+            <div class="team-icon">🇦🇺</div>
+            <h3>Australia</h3>
+        </div>
+
+        <div class="team-box searchable">
+            <div class="team-icon">🇬🇧</div>
+            <h3>England</h3>
+        </div>
+
+        <div class="team-box searchable">
+            <div class="team-icon">🇿🇦</div>
+            <h3>South Africa</h3>
+        </div>
+
+        <div class="team-box searchable">
+            <div class="team-icon">🇳🇿</div>
+            <h3>New Zealand</h3>
+        </div>
+
+        <div class="team-box searchable">
+            <div class="team-icon">🇵🇰</div>
+            <h3>Pakistan</h3>
+        </div>
+
+        <div class="team-box searchable">
+            <div class="team-icon">🇱🇰</div>
+            <h3>Sri Lanka</h3>
+        </div>
+
+        <div class="team-box searchable">
+            <div class="team-icon">🇧🇩</div>
+            <h3>Bangladesh</h3>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <p>
+        <strong>CricketStats</strong> © 2026
+    </p>
+
+    <p>
+        Cricket scores • Statistics • Teams • Players
+    </p>
+
+</footer>
+
+
+<script>
+
+function searchContent() {
+
+    let input =
+        document.getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    let items =
+        document.querySelectorAll(".searchable");
+
+    items.forEach(function(item) {
+
+        let text =
+            item.innerText.toLowerCase();
+
+        if(text.includes(input)) {
+
+            item.style.display = "";
+
+        } else {
+
+            item.style.display = "none";
+
+        }
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
+```
